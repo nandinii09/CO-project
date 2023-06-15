@@ -1,0 +1,21 @@
+def check_labels_and_flags(list1, list2):
+    flag = 1
+    labels = {}
+    for i, line in enumerate(list2):
+        if ":" in line:
+            label = line.split(":")[0]
+            if label in labels:
+                print("ERROR: Label already defined")
+                flag = 0
+            else:
+                labels[label] = i
+    for line in list1:
+        words = line.split()
+        if len(words) == 3 and words[2].startswith("$"):
+            if words[2][1:] not in labels:
+                print("ERROR: Use of undefined label")
+                flag = 0
+        if "FLAGS" in words and (words[0] not in op_type["C"]):
+            print("ERROR: Illegal use of FLAGS register")
+            flag = 0
+    return flag
